@@ -7,7 +7,7 @@ import java.time.*
 
 // Calendar 保存公历年内计算农历所需的信息
 class Calendar(val Year: Int) {
-//    val Year = year            // 公历年份
+    //    val Year = year            // 公历年份
     val SolarTermJDs = get25SolarTermJDs(Year - 1, DongZhi)   // 相关的 25 节气 UTC间 儒略日(力学时)
     val SolarTermTimes = Array(SolarTermJDs.size) {
         //为UTC时间，带有时区信息
@@ -19,7 +19,10 @@ class Calendar(val Year: Int) {
     val solarTermYearDays = Array(12) {
         // 十二节的 在所在年的第几天，此处需要将时区转换为东八区，因为每个时区的新年对应的UTC时间不同
         i: Int ->
-        SolarTermTimes[2 * i + 1].withZoneSameInstant(ZoneId.of("Asia/Shanghai")).dayOfYear
+        SolarTermTimes[2 * i + 1].withZoneSameInstant(ZoneId.of("+08:00")).dayOfYear
+//        SolarTermTimes[2 * i + 1].withZoneSameInstant(ZoneId.of("Asia/Shanghai")).dayOfYear
+//        使用"+08:00"，防止使用"Asia/Shanghai"引起转换到上海当时区时，
+//        java1.8中"Asia/Shanghai"会转换成东八区，python中会转换成上海当地时区
     }
 
     init {
@@ -105,7 +108,8 @@ class Calendar(val Year: Int) {
     fun SolarDayToLunarDay(month: Int, day: Int): Day {
 //    由于要计算日期在所在年的天数，因此需要使用东八区时间
 //        为方便UTC的计算，使用20:00的时间进行计算，这样UTC时间将是12:00，对应的JD是整数
-        val zoneID = ZoneId.of("Asia/Shanghai")
+//        val zoneID = ZoneId.of("Asia/Shanghai")
+        val zoneID = ZoneId.of("+08:00")
         val dt = ZonedDateTime.of(Year, month, day, 20, 0, 0, 0, zoneID)
         val yd = dt.dayOfYear
 
@@ -125,7 +129,7 @@ class Calendar(val Year: Int) {
         for (m in Months) {
 //            将合朔时间归算到东八区的当日00:00，当时也归算到东八区的00:00
             var shuoTime = m.ShuoTime.withZoneSameInstant(zoneID)
-            val dd = deltaDays(shuoTime.toLocalDate(), dt.toLocalDate()) + 1 //合朔当日即为1日
+            val dd = deltaDays(shuoTime.toLocalDate(), dt.toLocalDate()) + 1 //合朔当日即为1日，所以需要加1
             if (1 <= dd && dd <= m.Days) {
                 lunarMonth = m
                 lunarDay = dd
@@ -141,6 +145,7 @@ class Calendar(val Year: Int) {
         } else if (day == solarTermInfos[1].Day) {
             solarTerm = solarTermInfos[1].SolarTerm
         }
+
         var y = Year
         if (month < 2) y = Year - 1//如果是农历还没到正月，以去年的年份表示
         return Day(y, lunarDay, lunarMonth, monthZhi + 1, solarTerm)

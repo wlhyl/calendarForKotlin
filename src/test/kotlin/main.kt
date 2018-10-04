@@ -3,9 +3,12 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import org.lzh.lunar.*
 import org.lzh.util.*
+import org.lzh.calendar.SolarToLunar
 
 fun main(args: Array<String>) {
-    val defaultZone = ZoneId.systemDefault()
+    val t = SolarToLunar(2018,1,5)
+    println(t)
+//    val defaultZone = ZoneId.systemDefault()
 ////    val localT = ZonedDateTime.of(2018,3,18,0,0,0,0,defaultZone)
 //    val localT = ZonedDateTime.now(defaultZone)
 //    val utcT = localT.withZoneSameInstant(ZoneId.of("UTC"))
@@ -23,11 +26,15 @@ fun main(args: Array<String>) {
 //    val j = GetSolarTermJD(2018, QiuFen)
 //    println(j)
 //    println(GetDateTimeFromJulianDay(j).withZoneSameInstant(ZoneId.of("Asia/Shanghai")))
-val a = Calendar(2018)
-////val b = GetDayGanZhi(2018,9,22)
-////    println(b)
-    val d = a.SolarDayToLunarDay(1,22)
-    println(d.SolarTermName)
+//val a = Calendar(2018)
+//////val b = GetDayGanZhi(2018,9,22)
+//////    println(b)
+//    val d = a.SolarDayToLunarDay(10,3)
+//    println(d.MonthName)
+//    println(d.DayName)
+//    println(d.GanZhiMonth)
+//    print(GetDayGanZhi(2018,10,3))
+//    println(d)
 //val t= ZonedDateTime.of(2018,1,3,12,0,0,0,defaultZone)
 ////println(t.toLocalDate().atTime(0,0,0).atZone(defaultZone).withZoneSameInstant(ZoneId.of("UTC")))
 //    val t1= ZonedDateTime.of(2018,1,4,0,0,0,0,defaultZone)
