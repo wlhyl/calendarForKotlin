@@ -19,6 +19,7 @@
 
 package org.lzh.util
 import jodd.time.JulianDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -113,4 +114,17 @@ fun GetDateTimeFromJulianDay(JD: Double): ZonedDateTime {
     jd -= GetDeltaT(yy, mm) / 86400
     t = JulianDate(jd).toLocalDateTime()
     return t.atZone(ZoneId.of("UTC"))
+}
+
+//GetJulianDayFromDateTime 将 datetime.datetime 转换为儒略日
+//其中包含了 UTC 到 TT 的转换
+//传入参数为UTC时间
+//返回力学时的儒略日，浮点数
+fun GetJulianDayFromDateTime(t: LocalDateTime):Double {
+    var jd = JulianDate.of(t).doubleValue()
+    val yy = t.year
+    val mm = t.monthValue
+//    UTC -> TT
+    jd += GetDeltaT(yy, mm) / 86400
+    return jd
 }
