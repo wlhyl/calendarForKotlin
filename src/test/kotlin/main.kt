@@ -6,7 +6,7 @@ import org.lzh.util.*
 import org.lzh.calendar.SolarToLunar
 
 fun main(args: Array<String>) {
-    val t = SolarToLunar(2018,1,5)
+    val t = SolarToLunar(2018,11,7)
     println(t)
 //    val defaultZone = ZoneId.systemDefault()
 ////    val localT = ZonedDateTime.of(2018,3,18,0,0,0,0,defaultZone)

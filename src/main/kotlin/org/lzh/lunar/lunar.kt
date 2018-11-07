@@ -48,7 +48,12 @@ class Calendar(val Year: Int) {
             // 精度不高，暂时以下式作计算
             //以晚11:00作第二日，应当加上24-11/24再取整
             // TODO
-            month.Days = (nextShuoJD + 0.5).toInt() - (month.ShuoJD + 0.5).toInt()
+//            month.Days = (nextShuoJD + 0.5).toInt() - (month.ShuoJD + 0.5).toInt()
+            month.Days = deltaDays(
+                    month.ShuoTime.withZoneSameInstant(ZoneId.of("+08:00")).toLocalDate(),
+                    GetDateTimeFromJulianDay(nextShuoJD).withZoneSameInstant(ZoneId.of("+08:00")).toLocalDate())
+//            println("${month.ShuoTime} ${GetDateTimeFromJulianDay(nextShuoJD)} ${nextShuoJD} ${month.ShuoJD} ${(nextShuoJD + 0.5).toInt()} ${(month.ShuoJD + 0.5).toInt()} ${month.Days}")
+
 //            month.Days = (nextShuoJD + 13.0/24).toInt() - (month.ShuoJD + 13.0/24).toInt()
             months.add(month)
             yuejian++
@@ -130,6 +135,7 @@ class Calendar(val Year: Int) {
 //            将合朔时间归算到东八区的当日00:00，当时也归算到东八区的00:00
             var shuoTime = m.ShuoTime.withZoneSameInstant(zoneID)
             val dd = deltaDays(shuoTime.toLocalDate(), dt.toLocalDate()) + 1 //合朔当日即为1日，所以需要加1
+//            println("${shuoTime.toLocalDate()} ${dt.toLocalDate()} ${m.Days} ${dd}")
             if (1 <= dd && dd <= m.Days) {
                 lunarMonth = m
                 lunarDay = dd
@@ -150,6 +156,7 @@ class Calendar(val Year: Int) {
         if (month < 2) y = Year - 1//如果是农历还没到正月，以去年的年份表示
         return Day(y, lunarDay, lunarMonth, monthZhi + 1, solarTerm)
     }
+
     private fun getMonthSolarTerms(month: Int): Array<solarTermInfo> {
 //    var list [2]*solarTermInfo
         val index = 2 * month - 1
