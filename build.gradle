@@ -6,8 +6,8 @@ plugins {
 
 group 'org.lzh'
 //version '1.0'
-version '1.0.1'
-
+//version '1.0.1'
+version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -15,7 +15,8 @@ repositories {
     mavenCentral()
 //    flatDir {  dirs 'lib' }
     maven{
-        url "http://172.168.1.8/repository/maven-releases/"
+//        url "http://172.168.1.8/repository/maven-releases/"
+        url = "http://172.168.1.8/repository/maven-snapshots/"
 //        credentials {
 //            username "admin"
 //            password "admin123"
@@ -28,7 +29,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'org.jodd:jodd-core:5.0.4'
 //    compile name: "ganzhiwuxing-1.0"
-    compile 'org.lzh:ganzhiwuxing:1.0'
+    compile 'org.lzh:ganzhiwuxing:1.0-SNAPSHOT'
 }
 
 compileKotlin {
@@ -63,7 +64,8 @@ publishing {
     repositories {
         maven {
             //指定要上传的maven私服仓库
-            url = "http://172.168.1.8/repository/maven-releases/"
+//            url = "http://172.168.1.8/repository/maven-releases/"
+            url = "http://172.168.1.8/repository/maven-snapshots/"
             //认证用户和密码
             credentials {
                 username 'admin'
