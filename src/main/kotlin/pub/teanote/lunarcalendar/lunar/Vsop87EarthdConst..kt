@@ -34,9 +34,9 @@ http://www.gnu.org/licenses/agpl.html
 
 */
 
-package org.lzh.lunar
+package pub.teanote.lunarcalendar.lunar
 
-fun GetEarthL0(t: Double) // 559 terms of order 0
+internal fun getEarthL0(t: Double) // 559 terms of order 0
         : Double {
     var L0 = 0.0
     L0 += 1.75347045673
@@ -1158,7 +1158,7 @@ fun GetEarthL5(t: Double) // 5 terms of order 5
 }
 
 
-fun GetEarthB0(t: Double) // 184 terms of order 0
+internal fun getEarthB0(t: Double) // 184 terms of order 0
         : Double {
     var B0 = 0.0
     B0 += 0.00000279620 * Math.cos(3.19870156017 + 84334.66158130829 * t)
@@ -1455,7 +1455,7 @@ fun GetEarthB1(t: Double) // 99 terms of order 1
 }
 
 
-fun GetEarthB2(t: Double) // 49 terms of order 2
+internal fun getEarthB2(t: Double) // 49 terms of order 2
         : Double {
     var B2 = 0.0
     B2 += 0.00000001662 * Math.cos(1.62703209173 + 84334.66158130829 * t)
@@ -1511,7 +1511,7 @@ fun GetEarthB2(t: Double) // 49 terms of order 2
 }
 
 
-fun GetEarthB3(t: Double) // 11 terms of order 3
+internal fun getEarthB3(t: Double) // 11 terms of order 3
         : Double {
     var B3 = 0.0
     B3 += 0.00000000011 * Math.cos(0.23877262399 + 7860.4193924392 * t)
@@ -1529,7 +1529,7 @@ fun GetEarthB3(t: Double) // 11 terms of order 3
 }
 
 
-fun GetEarthB4(t: Double) // 5 terms of order 4
+internal fun getEarthB4(t: Double) // 5 terms of order 4
         : Double {
     var B4 = 0.0
     B4 += 0.00000000004 * Math.cos(0.79662198849 + 6438.4962494256 * t)
@@ -1549,7 +1549,7 @@ fun GetEarthB5(t: Double) // 1 term of order 5
 }
 
 
-fun GetEarthR0(t: Double) // 526 terms of order 0
+internal fun getEarthR0(t: Double) // 526 terms of order 0
         : Double {
     var R0 = 0.0
     R0 += 1.00013988799
@@ -2082,7 +2082,7 @@ fun GetEarthR0(t: Double) // 526 terms of order 0
 }
 
 
-fun GetEarthR1(t: Double) // 292 terms of order 1
+internal fun getEarthR1(t: Double) // 292 terms of order 1
         : Double {
     var R1 = 0.0
     R1 += 0.00103018608 * Math.cos(1.10748969588 + 6283.0758499914 * t)
@@ -2381,7 +2381,7 @@ fun GetEarthR1(t: Double) // 292 terms of order 1
 }
 
 
-fun GetEarthR2(t: Double) // 139 terms of order 2
+internal fun getEarthR2(t: Double) // 139 terms of order 2
         : Double {
     var R2 = 0.0
     R2 += 0.00004359385 * Math.cos(5.78455133738 + 6283.0758499914 * t)
@@ -2527,7 +2527,7 @@ fun GetEarthR2(t: Double) // 139 terms of order 2
 }
 
 
-fun GetEarthR3(t: Double) // 27 terms of order 3
+internal fun getEarthR3(t: Double) // 27 terms of order 3
         : Double {
     var R3 = 0.0
     R3 += 0.00000144595 * Math.cos(4.27319435148 + 6283.0758499914 * t)
@@ -2561,7 +2561,7 @@ fun GetEarthR3(t: Double) // 27 terms of order 3
 }
 
 
-fun GetEarthR4(t: Double) // 10 terms of order 4
+internal fun getEarthR4(t: Double) // 10 terms of order 4
         : Double {
     var R4 = 0.0
     R4 += 0.00000003858 * Math.cos(2.56384387339 + 6283.0758499914 * t)
@@ -2578,7 +2578,7 @@ fun GetEarthR4(t: Double) // 10 terms of order 4
 }
 
 
-fun GetEarthR5(t: Double) // 3 terms of order 5
+internal fun getEarthR5(t: Double) // 3 terms of order 5
         : Double {
     var R5 = 0.0
     R5 += 0.00000000086 * Math.cos(1.21579741687 + 6283.0758499914 * t)

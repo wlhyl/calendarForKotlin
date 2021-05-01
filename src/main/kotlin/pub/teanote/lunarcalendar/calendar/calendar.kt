@@ -1,35 +1,44 @@
-package org.lzh.calendar
+package pub.teanote.lunarcalendar.calendar
 
-import org.lzh.ganzhiwuxing.DiZhi
-import org.lzh.ganzhiwuxing.GanZhi
-import org.lzh.lunar.*
-import org.lzh.util.GetDateTimeFromJulianDay
+import pub.teanote.ganzhiwuxing.DiZhi
+import pub.teanote.ganzhiwuxing.GanZhi
+import pub.teanote.lunarcalendar.lunar.*
+import pub.teanote.lunarcalendar.util.getDateTimeFromJulianDay
 import java.time.ZoneId
 import java.time.LocalDateTime
 
+/**
+ * 给定日期的农历信息
+ * 如：2021/4/2的农历信息
+ * 包括：
+ * 年干支
+ * 月干支
+ * 农历月数
+ * 农历日数
+ * 节：节名，节时刻
+ * 气：气名，气时刻
+ */
 data class LunarDayInfo(
-        val GanZhiYear: GanZhi,
-        val GanZhiMonth: GanZhi,
-        val GanZhiDay: GanZhi,
-        val LunarMonthName: String,
-        val LunarDayName: String,
-        val LunarLeapMonth: Boolean,
+    val GanZhiYear: GanZhi,
+    val GanZhiMonth: GanZhi,
+    val GanZhiDay: GanZhi,
+    val LunarMonthName: String,
+    val LunarDayName: String,
+    val LunarLeapMonth: Boolean,
 //            Zodiac         string
-        val SolarTermFist: solarTermInfo,
-        val SolarTermSecond: solarTermInfo
+    val SolarTermFist: solarTermInfo,
+    val SolarTermSecond: solarTermInfo
 //            SolarFestival  string
 //            LunarFestival  string
 //            Worktime       int32
 )
 
-fun SolarToLunar(year: Int, month: Int, day: Int): LunarDayInfo {
-//    solarDay := Day{
-//        Year:  year,
-//        Month: month,
-//        Day:   day,
-//    }
+/**
+ * 传公历年，月，日，返回农历年
+ */
+fun solarToLunar(year: Int, month: Int, day: Int): LunarDayInfo {
     val cc = Calendar(year)
-    val lunarDay = cc.SolarDayToLunarDay(month, day)
+    val lunarDay = cc.solarDayToLunarDay(month, day)
     val monthZhi = lunarDay.GanZhiMonth.zhi
     var stOrder = when (monthZhi) {
         DiZhi("子") -> DaXue
@@ -45,8 +54,11 @@ fun SolarToLunar(year: Int, month: Int, day: Int): LunarDayInfo {
         DiZhi("戌") -> HanLu
         else -> LiDong
     }
-    val solarTerm0 = solarTermInfo(GetSolarTermName(stOrder), getSolarTermTime(year, stOrder))
-    val solarTerm1 = solarTermInfo(GetSolarTermName((stOrder + 1) % 24), getSolarTermTime(year, (stOrder + 1) % 24))
+    val solarTerm0 = solarTermInfo(getSolarTermName(stOrder), getSolarTermTime(year, stOrder))
+    val solarTerm1 = solarTermInfo(
+        getSolarTermName((stOrder + 1) % 24),
+        getSolarTermTime(year, (stOrder + 1) % 24)
+    )
     val dayInfo = LunarDayInfo(
 //            GetYearGanZhi(year),
             GetYearGanZhi(lunarDay.Year),
@@ -54,7 +66,7 @@ fun SolarToLunar(year: Int, month: Int, day: Int): LunarDayInfo {
             GetDayGanZhi(year, month, day),
             lunarDay.MonthName,
             lunarDay.DayName,
-            lunarDay.Month.IsLeap,
+            lunarDay.Month.isLeap,
             solarTerm0,
             solarTerm1
 //        lunarDay.SolarTermName,
@@ -66,8 +78,8 @@ fun SolarToLunar(year: Int, month: Int, day: Int): LunarDayInfo {
 }
 
 private fun getSolarTermTime(year: Int, stOrder: Int): LocalDateTime {
-    val jd = GetSolarTermJD(year, stOrder)
-    val t = GetDateTimeFromJulianDay(jd).withZoneSameInstant(ZoneId.of("+08:00")).toLocalDateTime()
+    val jd = getSolarTermJD(year, stOrder)
+    val t = getDateTimeFromJulianDay(jd).withZoneSameInstant(ZoneId.of("+08:00")).toLocalDateTime()
 //    val jd1=GetSolarTermJD(year, (stOrder+1)%24)
 //    val t1 = GetDateTimeFromJulianDay(jd1).withZoneSameInstant(ZoneId.of("+08:00")).toLocalDateTime()
 //    return arrayOf(t0,t1)

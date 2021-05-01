@@ -1,4 +1,4 @@
-package org.lzh.lunar
+package pub.teanote.lunarcalendar.lunar
 
 // 月地心黄经系数
 data class MoonEclipticLongitudeCoeff(

@@ -1,4 +1,4 @@
-package org.lzh.lunar
+package pub.teanote.lunarcalendar.lunar
 
 //// ToRadians 角度转换为弧度
 //func ToRadians(degrees float64) float64 {

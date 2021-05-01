@@ -19,7 +19,7 @@
  * 这份代码由https://github.com/linuxdeepin/go-lib/blob/master/calendar/lunar/iau1980.go转写面来，
  * 上面的注释是原代码文件中的。
  */
-package org.lzh.lunar
+package pub.teanote.lunarcalendar.lunar
 
 data class NutationParameter(val D: Double, val M: Double, val Mp: Double, val F: Double, val Omega: Double)
 

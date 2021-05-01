@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.lzh.util
+package pub.teanote.lunarcalendar.util
 import jodd.time.JulianDate
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -103,28 +103,32 @@ import java.time.ZonedDateTime
 //    return Triple(hour,minute,second)
 //}
 
-// GetDateTimeFromJulianDay 将儒略日转换为 time.Time
-// 其中包含了 TT 到 UTC 的转换
-fun GetDateTimeFromJulianDay(JD: Double): ZonedDateTime {
+/**
+ *  getDateTimeFromJulianDay 将儒略日转换为 time.Time
+ *  其中包含了 TT 到 UTC 的转换
+ */
+internal fun getDateTimeFromJulianDay(JD: Double): ZonedDateTime {
     var jd = JD
     var t = JulianDate(jd).toLocalDateTime()
     val yy = t.year
     val mm = t.month.value
     //  TT -> UTC
-    jd -= GetDeltaT(yy, mm) / 86400
+    jd -= getDeltaT(yy, mm) / 86400
     t = JulianDate(jd).toLocalDateTime()
     return t.atZone(ZoneId.of("UTC"))
 }
 
-//GetJulianDayFromDateTime 将 datetime.datetime 转换为儒略日
-//其中包含了 UTC 到 TT 的转换
-//传入参数为UTC时间
-//返回力学时的儒略日，浮点数
-fun GetJulianDayFromDateTime(t: LocalDateTime):Double {
+/**
+ * getJulianDayFromDateTime 将 datetime.datetime 转换为儒略日
+ * 其中包含了 UTC 到 TT 的转换
+ * 传入参数为UTC时间
+ * 返回力学时的儒略日，浮点数
+ */
+internal fun getJulianDayFromDateTime(t: LocalDateTime):Double {
     var jd = JulianDate.of(t).doubleValue()
     val yy = t.year
     val mm = t.monthValue
 //    UTC -> TT
-    jd += GetDeltaT(yy, mm) / 86400
+    jd += getDeltaT(yy, mm) / 86400
     return jd
 }

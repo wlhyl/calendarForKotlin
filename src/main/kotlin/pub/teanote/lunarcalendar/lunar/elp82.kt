@@ -1,9 +1,9 @@
-package org.lzh.lunar
-import org.lzh.util.GetJulianCentury
+package pub.teanote.lunarcalendar.lunar
+import pub.teanote.lunarcalendar.util.getJulianCentury
 // 参数 T 儒略世纪数
 // 返回 弧度
 data  class MoonEclipticParameter(val Lp: Double, val D: Double, val M: Double, val Mp: Double, val F: Double, val E: Double)
-fun GetMoonEclipticParameter(T: Double ):MoonEclipticParameter {
+fun GetMoonEclipticParameter(T: Double ): MoonEclipticParameter {
     val T2 = T * T
     val T3 = T2 * T
     val T4 = T3 * T
@@ -54,7 +54,7 @@ fun CalcMoonLongitudePerturbation(T: Double, Lp: Double, F: Double): Double {
 // jd 儒略日
 // 返回 弧度
 fun GetMoonEclipticLongitudeEC(jd: Double): Double {
-    val T = GetJulianCentury(jd)
+    val T = getJulianCentury(jd)
     val(Lp, D, M, Mp, F, E )= GetMoonEclipticParameter(T)
     // Lp 计算是正确的
     // fmt.Printf("Lp = %f\n", Lp)

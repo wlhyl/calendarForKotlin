@@ -1,16 +1,16 @@
-package org.lzh.lunar
+package pub.teanote.lunarcalendar.lunar
 
-import org.lzh.ganzhiwuxing.DiZhi
-import org.lzh.ganzhiwuxing.GanZhi
-import org.lzh.ganzhiwuxing.TianGan
+import pub.teanote.ganzhiwuxing.DiZhi
+import pub.teanote.ganzhiwuxing.GanZhi
+import pub.teanote.ganzhiwuxing.TianGan
 
 // Day 保存农历日信息
 class Day(
-        val Year: Int,   // 农历年
-        val Day: Int, // 农历日
-        val Month: Month, // 农历月
-        private val MonthZhi: Int,    // 农历日所在的月的地支, 1，为子月
-        private val SolarTerm: Int    // 0~23 二十四节气 ，-1 非节气
+    val Year: Int,   // 农历年
+    val Day: Int, // 农历日
+    val Month: Month, // 农历月
+    private val MonthZhi: Int,    // 农历日所在的月的地支, 1，为子月
+    private val SolarTerm: Int    // 0~23 二十四节气 ，-1 非节气
 ) {
     // 十二月名
     private val monthNames = arrayOf("正", "二", "三", "四", "五", "六", "七", "八", "九", "十", "冬", "腊")
@@ -42,7 +42,7 @@ class Day(
     val Festival = GetFestival()
     // SolarTermName 获取当天的二十四节气名
 // 没有则返回空字符串
-    val SolarTermName = GetSolarTermName(SolarTerm)
+    val SolarTermName = getSolarTermName(SolarTerm)
     // GanZhiMonth 获取当天的月干支
 //    val GanZhiMonth =GanZhi(TianGan("甲"), DiZhi("子")) + ((Year-1899)*12 + (MonthZhi - 1) + 12)
     val GanZhiMonth: GanZhi
@@ -63,8 +63,8 @@ class Day(
 
     // MonthName 获取当天的农历月名称
     private fun GetMonthName(): String {
-        val monthName = monthNames[Month.Number - 1]
-        if (Month.IsLeap) {
+        val monthName = monthNames[Month.number - 1]
+        if (Month.isLeap) {
             return "闰" + monthName + "月"
         }
         return monthName + "月"
@@ -73,14 +73,14 @@ class Day(
     // Festival 获取当天的农历节日名
 // 没有则返回空字符串
     private fun GetFestival(): String {
-        val key = Month.Number * 100 + Day
+        val key = Month.number * 100 + Day
 
 //            return lunarFestival[key]?:""
         val lunarFestivalValue = lunarFestival[key]?:""
         if (lunarFestivalValue != "") return lunarFestivalValue
 
         // 农历腊月（十二月）的最后个一天
-        if (Month.Number == 12 && Day == Month.Days) {
+        if (Month.number == 12 && Day == Month.days) {
             return "除夕"
         }
         return ""

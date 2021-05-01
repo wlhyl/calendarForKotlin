@@ -1,12 +1,11 @@
-import jodd.time.JulianDate
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import org.lzh.lunar.*
-import org.lzh.util.*
-import org.lzh.calendar.SolarToLunar
+import pub.teanote.lunarcalendar.calendar.solarToLunar
+import pub.teanote.lunarcalendar.lunar.getSolarTermJD
 
 fun main(args: Array<String>) {
-    val t = SolarToLunar(2018,11,7)
+   val a=  getSolarTermJD(2022, 0)
+    println(a)
+    val t = solarToLunar(2021,5,1)
+
     println(t)
 //    val defaultZone = ZoneId.systemDefault()
 ////    val localT = ZonedDateTime.of(2018,3,18,0,0,0,0,defaultZone)

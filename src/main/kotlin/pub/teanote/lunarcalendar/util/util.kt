@@ -17,7 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.lzh.util
+package pub.teanote.lunarcalendar.util
+
+import kotlin.math.floor
 
 //// IsLeapYear 公历闰年判断
 //func IsLeapYear(year int) bool {
@@ -43,9 +45,11 @@ package org.lzh.util
 //    return 365
 //}
 
-// ToJulianDate 计算Gregorian日期的儒略日数，以TT当天中午12点为准(结果是整数)。
-// 算法摘自 http://en.wikipedia.org/wiki/Julian_day
-fun ToJulianDate(year: Int, month: Int, day: Int): Double {
+/**
+ * ToJulianDate 计算Gregorian日期的儒略日数，以TT当天中午12点为准(结果是整数)。
+ * 算法摘自 http://en.wikipedia.org/wiki/Julian_day
+ */
+internal fun toJulianDate(year: Int, month: Int, day: Int): Double {
 //    var a int = (14 - month) / 12
 //    var y int = year + 4800 - a
 //    var m int = month + 12*a - 3
@@ -58,39 +62,45 @@ fun ToJulianDate(year: Int, month: Int, day: Int): Double {
         y -= 1
         m += 12
     }
-    val A = Math.floor(y / 100.0).toInt()
-    var B = 0
+    val a = floor(y / 100.0).toInt()
+    var b = 0
     if (y > 1582 || (y == 1582 && (m > 10 || (m == 10 || d >= 15)))) {
-        B = 2 - A + Math.floor(A / 4.0).toInt()
+        b = 2 - a + floor(a / 4.0).toInt()
     }
-    val jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + B - 1524.5
-    return jd
-
+    return floor(365.25 * (y + 4716)) + floor(30.6001 * (m + 1)) + d + b - 1524.5
 }
 
-// ToJulianDateHMS 计算Gregorian时间的儒略日数
-// 算法摘自 http://en.wikipedia.org/wiki/Julian_day
-//这里没有使用深度原来的代码
-fun ToJulianDateHMS(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Double): Double {
-    val jdn = ToJulianDate(year, month, day)
+/**
+ *  ToJulianDateHMS 计算Gregorian时间的儒略日数
+ *  算法摘自 http://en.wikipedia.org/wiki/Julian_day
+ *  这里没有使用深度原来的代码
+ */
+internal fun toJulianDateHMS(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Double): Double {
+    val jdn = toJulianDate(year, month, day)
     return jdn + (hour-12)/24.0 + minute/1440.0 + second/86400.0
 }
 
-// Gregorian历TT2000年1月1日中午12点的儒略日
-val J2000 = 2451545.0
-//
-// GetJulianThousandYears 计算儒略千年数
-fun GetJulianThousandYears(jd: Double):Double {
+/**
+ * Gregorian历TT2000年1月1日中午12点的儒略日
+ */
+internal const val J2000 = 2451545.0
+
+/**
+ *  getJulianThousandYears 计算儒略千年数
+ */
+internal fun getJulianThousandYears(jd: Double):Double {
     //1000年的日数
-    val DaysOf1000Years = 365250.0
-    return (jd - J2000) / DaysOf1000Years
+    val daysOf1000Years = 365250.0
+    return (jd - J2000) / daysOf1000Years
 }
 
-// GetJulianCentury 计算儒略世纪数
-fun GetJulianCentury(jd: Double): Double {
+/**
+ *  getJulianCentury 计算儒略世纪数
+ */
+internal fun getJulianCentury(jd: Double): Double {
     // 100年的日数
-    val  DaysOfCentury = 36525.0
-    return (jd - J2000) / DaysOfCentury
+    val  daysOfCentury = 36525.0
+    return (jd - J2000) / daysOfCentury
 }
 
 //// GetWeekday 计算Gregorian日历的星期几
@@ -110,10 +120,12 @@ fun GetJulianCentury(jd: Double): Double {
 //    return w
 //}
 
-// GetDeltaT 计算地球时和UTC的时差，算法摘自
-// http://eclipse.gsfc.nasa.gov/SEhelp/deltatpoly2004.html NASA网站
-// ∆T = TT - UT 此算法在-1999年到3000年有效
-fun GetDeltaT(year: Int, month: Int): Double {
+/**
+ *  getDeltaT 计算地球时和UTC的时差，算法摘自
+ *  http://eclipse.gsfc.nasa.gov/SEhelp/deltatpoly2004.html NASA网站
+ *  ∆T = TT - UT 此算法在-1999年到3000年有效
+ */
+internal fun getDeltaT(year: Int, month: Int): Double {
     val y = year + (month - 0.5) / 12.0
     when {
         y < -500 -> {
@@ -220,8 +232,10 @@ fun GetDeltaT(year: Int, month: Int): Double {
     }
 }
 
-// JDUTC2BeijingTime 儒略日 UTC 时间转换到北京时间
-fun JDUTC2BeijingTime(utcJD: Double):Double {
+/**
+ * JDUTC2BeijingTime 儒略日 UTC 时间转换到北京时间
+ */
+internal fun jDUTC2BeijingTime(utcJD: Double):Double {
     return utcJD + 8.0/24.0
 }
 

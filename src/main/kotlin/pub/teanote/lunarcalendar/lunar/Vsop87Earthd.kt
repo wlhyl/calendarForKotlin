@@ -20,8 +20,9 @@
  * 以上是原代码的注释
  */
 
-package org.lzh.lunar
-import org.lzh.util.*
+package pub.teanote.lunarcalendar.lunar
+import pub.teanote.lunarcalendar.util.getJulianCentury
+import pub.teanote.lunarcalendar.util.getJulianThousandYears
 
 /**
  * 按儒略日计算地球的日心黄经
@@ -29,10 +30,9 @@ import org.lzh.util.*
  * 参数： jd 儒略日
  * 返回 地球的日心黄经，单位是弧度(rad)
  */
-
-fun GetSunEclipticLongitudeForEarth(jd: Double): Double {
-    val t = GetJulianThousandYears(jd)
-    val L0 = GetEarthL0(t)
+internal fun getSunEclipticLongitudeForEarth(jd: Double): Double {
+    val t = getJulianThousandYears(jd)
+    val L0 = getEarthL0(t)
     val L1 = GetEarthL1(t)
     val L2 = GetEarthL2(t)
     val L3 = GetEarthL3(t)
@@ -49,14 +49,13 @@ fun GetSunEclipticLongitudeForEarth(jd: Double): Double {
  * 参数 jd  儒略日
  * 返回 地球的日心黄纬，单位是弧度(rad)
  */
-
-fun GetSunEclipticLatitudeForEarth(jd: Double) : Double {
-    val t = GetJulianThousandYears(jd)
-    val B0 = GetEarthB0(t)
+internal fun getSunEclipticLatitudeForEarth(jd: Double) : Double {
+    val t = getJulianThousandYears(jd)
+    val B0 = getEarthB0(t)
     val B1 = GetEarthB1(t)
-    val B2 = GetEarthB2(t)
-    val B3 = GetEarthB3(t)
-    val B4 = GetEarthB4(t)
+    val B2 = getEarthB2(t)
+    val B3 = getEarthB3(t)
+    val B4 = getEarthB4(t)
     val B5 = GetEarthB5(t)
 //    B := ((((B4*t)+B3)*t+B2)*t+B1)*t + B0
     val B = B5+B4+B3+B2+B1+ B0
@@ -69,14 +68,14 @@ fun GetSunEclipticLatitudeForEarth(jd: Double) : Double {
  * 参数 jd  儒略日
  * 返回 地球和太阳的距离，单位是天文单位(au)
  */
-fun GetSunRadiusForEarth(jd: Double): Double {
-    val t = GetJulianThousandYears(jd)
-    val R0 = GetEarthR0(t)
-    val R1 = GetEarthR1(t)
-    val R2 = GetEarthR2(t)
-    val R3 = GetEarthR3(t)
-    val R4 = GetEarthR4(t)
-    val R5 = GetEarthR5(t)
+internal fun getSunRadiusForEarth(jd: Double): Double {
+    val t = getJulianThousandYears(jd)
+    val R0 = getEarthR0(t)
+    val R1 = getEarthR1(t)
+    val R2 = getEarthR2(t)
+    val R3 = getEarthR3(t)
+    val R4 = getEarthR4(t)
+    val R5 = getEarthR5(t)
 //    val R = ((((R5*t+R4)*t+R3)*t+R2)*t+R1)*t + R0
     val R = R5+R4+R3+R2+R1+ R0
     return R
@@ -94,8 +93,8 @@ fun GetSunRadiusForEarth(jd: Double): Double {
  *            儒略日
  * 返回 修正量(rad)
  */
-fun Vsop2Fk5LongitudeCorrection(l: Double, b: Double, jd: Double): Double {
-    val t = GetJulianCentury(jd)
+internal fun vsop2Fk5LongitudeCorrection(l: Double, b: Double, jd: Double): Double {
+    val t = getJulianCentury(jd)
     val lp = l - Math.toRadians(1.397)*t - Math.toRadians(0.00031)*t*t
     return SecondsToRadians(-0.09033 + 0.03916*(Math.cos(lp)+Math.sin(lp))*Math.tan(b))
 }
@@ -108,27 +107,27 @@ fun Vsop2Fk5LongitudeCorrection(l: Double, b: Double, jd: Double): Double {
  * 返回 修正后的地心黄经(rad)
  */
 // 常量
-val lightAberration = SecondsToRadians(20.4898)
+internal val lightAberration = SecondsToRadians(20.4898)
 
-fun GetEarthEclipticLongitudeForSun(jd: Double): Double {
+internal fun getEarthEclipticLongitudeForSun(jd: Double): Double {
     // 计算地球的日心黄经
-    var l = GetSunEclipticLongitudeForEarth(jd)
+    var l = getSunEclipticLongitudeForEarth(jd)
 
     // 计算地球的日心黄纬
-    val b = GetSunEclipticLatitudeForEarth(jd)
+    val b = getSunEclipticLatitudeForEarth(jd)
 
     // 修正章动
-    l += CalcEarthLongitudeNutation(GetJulianCentury(jd))
+    l += CalcEarthLongitudeNutation(getJulianCentury(jd))
 
     // 转换到fk5
-    l += Vsop2Fk5LongitudeCorrection(l, b, jd)
+    l += vsop2Fk5LongitudeCorrection(l, b, jd)
 
     // 转换成太阳的地心黄经
     l = Mod2Pi(l + Math.PI)
 
     // 计算光行差
     // 计算日地距离
-    val r = GetSunRadiusForEarth(jd)
+    val r = getSunRadiusForEarth(jd)
     // 太阳到地球的光行差参数
     l -= lightAberration / r
     return l
