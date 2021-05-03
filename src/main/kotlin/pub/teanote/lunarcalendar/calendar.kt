@@ -11,7 +11,7 @@ import kotlin.math.roundToInt
 /**
  * 传公历年，月，日，返回农历年
  */
-class Calendar(
+class LunarCalendar(
     private  val year :Int, private val month :Int, private val day :Int,
     private val hour :Int = 0, private val minute :Int = 0, private val second :Double = 0.0,
     private val ephePath :String? = null){
