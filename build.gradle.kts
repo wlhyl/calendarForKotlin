@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.4.31"
-    kotlin("plugin.spring") version "1.4.31"
+    kotlin("jvm") version "1.4.32"
+    kotlin("plugin.spring") version "1.4.32"
     id("maven-publish")
 }
 
@@ -25,15 +25,16 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 //    testCompile group: 'junit', name: 'junit', version: '4.12'
-    implementation("org.jodd:jodd-core:5.0.4")
+//    implementation("org.jodd:jodd-core:5.0.4")
 //    compile name: "ganzhiwuxing-1.0"
     implementation("pub.teanote:ganzhiwuxing:1.0-SNAPSHOT")
+    implementation("pub.teanote:sweph:1.0-SNAPSHOT")
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "1.8"
+        jvmTarget = "1.6"
     }
 }
 tasks.withType<Test> {
