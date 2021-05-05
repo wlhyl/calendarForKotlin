@@ -22,29 +22,54 @@ class LunarCalendar(
     // 从前一年冬至所在农历月开始的15个农历月的初一的儒略日，以东八区时间为准
     private val lunarMonths :List<LunarMonthData>
 
-    // 闰月在lunarMonthJds中的index
+    /**
+     * 闰年:true
+     */
     val isLeanYear :Boolean
 
-    //农历年
+    /**
+     * 农历年，干支表示
+     */
     val lunarYear :GanZhi
-    // 农历月
+
+    /**
+     * 农历月，以正月、二月、......、十月、冬月、腊月表示
+     */
     val lunarMonth :String
-    // 农历日
+
+    /**
+     * 农历日，以初一、初二、……、二十九、三十表示
+     */
     val lunarDay :String
 
-    //农历月干支
+    /**
+     * 农历年干支，按节气换年
+     */
+    val lunarYearGanZhi :GanZhi
+
+    /**
+     * 农历月干支，按节气换月
+     */
     val lunarMonthGanZhi :GanZhi
 
-    // 日干支
+    /**
+     * 日干支
+     */
     val lunarDayGanZhi : GanZhi
 
-    // 时干支
+    /**
+     * 时干支
+     */
     val timeGanZhi : GanZhi
 
-    //节
+    /**
+     * 节
+     */
     val solarTermFirst :SolarTermData
 
-    //气
+    /**
+     * 气
+     */
     val solarTermSecond :SolarTermData
 
     init {
@@ -115,14 +140,14 @@ class LunarCalendar(
         不能以monthNum < 2，将农历的丙申 - 1
         *、
          */
-        val yearGan = if(monthNum < 2){
+        this.lunarYearGanZhi = if(monthNum < 2){
             GanZhi(TianGan("甲"), DiZhi("子")) + (this.year - 1 - 1864)
         }else {
             GanZhi(TianGan("甲"), DiZhi("子")) + (this.year - 1864)
 
-        }.gan
+        }
 
-        this.lunarMonthGanZhi = when(yearGan){
+        this.lunarMonthGanZhi = when(this.lunarYearGanZhi.gan){
             TianGan("甲"), TianGan("己")-> GanZhi(TianGan("丙") + (monthDiZhi - DiZhi("寅")), monthDiZhi)
             TianGan("乙"), TianGan("庚")-> GanZhi(TianGan("戊"), DiZhi("寅")) + (monthDiZhi - DiZhi("寅"))
             TianGan("丙"), TianGan("辛")-> GanZhi(TianGan("庚") + (monthDiZhi - DiZhi("寅")), monthDiZhi)
@@ -325,7 +350,7 @@ class LunarCalendar(
 
     override fun toString(): String {
         return "${this.lunarYear}年${this.lunarMonth}${this.lunarDay} " +
-                "${this.lunarMonthGanZhi}月 ${this.lunarDayGanZhi}日 ${this.timeGanZhi}时 ${this.solarTermFirst} ${solarTermSecond}"
+                "${this.lunarYearGanZhi}年 ${this.lunarMonthGanZhi}月 ${this.lunarDayGanZhi}日 ${this.timeGanZhi}时 ${this.solarTermFirst} ${solarTermSecond}"
     }
 }
 
