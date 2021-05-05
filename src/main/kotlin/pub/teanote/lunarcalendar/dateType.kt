@@ -12,4 +12,4 @@ package pub.teanote.lunarcalendar
  */
 internal data class LunarMonthData(var num :Int, var jd: Double, var monthName :String = "", var isLeap :Boolean = false)
 
-data class SolarTermData(val name :String, val time :String)
+data class SolarTermData(val name :String, val year :Int, val month: Int, val day :Int, val hour :Int, val minute :Int, val second :Int)

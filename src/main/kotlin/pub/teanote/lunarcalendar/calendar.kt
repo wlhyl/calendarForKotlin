@@ -154,7 +154,8 @@ class LunarCalendar(
         val solarTerm0Time = getUT8DateTimeFromJd(solarTermJd0)
         this.solarTermFirst =  SolarTermData(
             SolarTermNames[monthNum * 2],
-            "${solarTerm0Time.year}-${solarTerm0Time.month}-${solarTerm0Time.day} ${solarTerm0Time.hour}:${solarTerm0Time.min}:${solarTerm0Time.sec.roundToInt()}")
+            solarTerm0Time.year, solarTerm0Time.month, solarTerm0Time.day,
+            solarTerm0Time.hour, solarTerm0Time.min, solarTerm0Time.sec.roundToInt())
 
         val solarTermJd1 = newtonIteration(solarTermJd0 + 15){jd ->
             swe_set_ephe_path(this.ephePath)
@@ -166,8 +167,8 @@ class LunarCalendar(
 
         val solarTerm1Time = getUT8DateTimeFromJd(solarTermJd1)
         this.solarTermSecond =  SolarTermData(SolarTermNames[monthNum * 2 + 1],
-            "${solarTerm1Time.year}-${solarTerm1Time.month}-${solarTerm1Time.day} ${solarTerm1Time.hour}:" +
-                    "${solarTerm1Time.min}:${solarTerm1Time.sec.roundToInt()}")
+            solarTerm1Time.year, solarTerm1Time.month, solarTerm1Time.day,
+            solarTerm1Time.hour, solarTerm1Time.min, solarTerm1Time.sec.roundToInt())
 
 
 
