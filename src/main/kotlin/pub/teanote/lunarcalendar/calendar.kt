@@ -68,7 +68,7 @@ class LunarCalendar(
     val solarTermFirst :SolarTermData
 
     /**
-     * 气
+     * 中气
      */
     val solarTermSecond :SolarTermData
 
@@ -93,13 +93,18 @@ class LunarCalendar(
        为方便计算，可以取20:00:00，utc此时为12:00:00
        此处默认计算00:00:00
         */
+        // 1582年10月15日00:00:00起为格里高利历
+        var calendar = SE_GREG_CAL
+        if(year < 1582) calendar = SE_JUL_CAL
+        if(year == 1582 && month < 10 ) calendar = SE_JUL_CAL
+        if(year == 1582 && month == 10 && day < 15 ) calendar = SE_JUL_CAL
         val currentT = swe_utc_time_zone(this.year, this.month, this.day, this.hour, this.minute, this.second, 8.0)
         val currentJd = swe_julday(
             currentT.year,
             currentT.month,
             currentT.day,
             currentT.hour + currentT.min / 60.0 + currentT.sec / 3600.0,
-            SE_GREG_CAL
+            calendar
         )
 
         // 找出当前日期所在农历月
@@ -140,7 +145,7 @@ class LunarCalendar(
         不能以monthNum < 2，将农历的丙申 - 1
         *、
          */
-        this.lunarYearGanZhi = if(monthNum < 2){
+        this.lunarYearGanZhi = if(currentJd < this.solarTermJds[3]){
             GanZhi(TianGan("甲"), DiZhi("子")) + (this.year - 1 - 1864)
         }else {
             GanZhi(TianGan("甲"), DiZhi("子")) + (this.year - 1864)

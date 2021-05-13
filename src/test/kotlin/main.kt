@@ -8,7 +8,7 @@ import kotlin.math.abs
 fun main(args: Array<String>) {
     val year = 2020
     val ephePath = "/Users/lzh/php/sweph"
-    val a = LunarCalendar(2017, 2, 7, 22,0, ephePath = ephePath)
+    val a = LunarCalendar(1280, 12, 7, 22,0, ephePath = ephePath)
     println(a)
 
 

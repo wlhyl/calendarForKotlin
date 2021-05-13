@@ -1,9 +1,6 @@
 package pub.teanote.lunarcalendar
 
-import pub.teanote.sweph.DateTimeData
-import pub.teanote.sweph.SE_GREG_CAL
-import pub.teanote.sweph.swe_revjul
-import pub.teanote.sweph.swe_utc_time_zone
+import pub.teanote.sweph.*
 import kotlin.math.abs
 
 /**
@@ -22,7 +19,7 @@ internal fun mod180(r0: Double): Double {
 
 internal  fun getUT8DateTimeFromJd(jd :Double) :DateTimeData{
 
-    val t = swe_revjul(jd, SE_GREG_CAL)
+    val t = swe_revjul(jd, if(jd < 2299160.5) SE_JUL_CAL else  SE_GREG_CAL)
     val h = t.hour.toInt()
     val mi = ((t.hour - h) * 60).toInt()
     val sec = ((t.hour - h) * 60 - mi) * 60
